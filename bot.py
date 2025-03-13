@@ -6,6 +6,7 @@ Bot initialization and configuration
 
 import os
 import logging
+from telegram.request import HTTPXRequest
 from telegram.ext import (Application, CommandHandler, CallbackQueryHandler,
                        MessageHandler, filters, ChatMemberHandler)
 from handlers import (start, profile_handler, play_handler, 
@@ -65,5 +66,11 @@ def create_bot():
     # Handle bot being added to or removed from chats
     application.add_handler(
         ChatMemberHandler(chat_member_handler, ChatMemberHandler.MY_CHAT_MEMBER))
+
+application = ApplicationBuilder() \
+    .token(os.getenv("TELEGRAM_BOT_TOKEN")) \
+    .request(HTTPXRequest(connect_timeout=30, read_timeout=30)) \
+    .build()
+  
 
     return application
