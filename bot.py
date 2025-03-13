@@ -27,7 +27,10 @@ def create_bot():
             "No TELEGRAM_BOT_TOKEN found in environment variables")
 
     # Create the application
-    application = Application.builder().token(token).build()
+    application = Application.builder() \
+        .token(token) \
+        .request(HTTPXRequest(connect_timeout=30, read_timeout=30)) \
+        .build()
 
     # Load user data
     load_user_data()
@@ -66,11 +69,5 @@ def create_bot():
     # Handle bot being added to or removed from chats
     application.add_handler(
         ChatMemberHandler(chat_member_handler, ChatMemberHandler.MY_CHAT_MEMBER))
-
-application = ApplicationBuilder() \
-    .token(os.getenv("TELEGRAM_BOT_TOKEN")) \
-    .request(HTTPXRequest(connect_timeout=30, read_timeout=30)) \
-    .build()
-  
 
     return application
