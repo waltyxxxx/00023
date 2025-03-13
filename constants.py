@@ -8,7 +8,7 @@ Constants and configuration values
 import os
 
 # Channel ID for posting game results (set from environment or leave as None)
-RESULTS_CHANNEL_ID = os.getenv("RESULTS_CHANNEL_ID")
+RESULTS_CHANNEL_ID = os.getenv("-1002305257035")
 
 # Default deposit amounts
 DEFAULT_DEPOSIT_AMOUNTS = [50, 100, 200, 500]
