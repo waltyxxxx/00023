@@ -196,26 +196,26 @@ async def play_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             [InlineKeyboardButton("◀️ Назад", callback_data="back_to_main")]
         ])
     )
-        # Send bet message to the channel
-        message = await context.bot.send_message(
-            chat_id=channel_id,
-            text=(
-                f"🎮 *НОВАЯ СТАВКА* 🔥\n\n"
-                f"👤 Игрок: {user.first_name}\n\n"
-                f"📝 *В комментарии к платежу укажите:*\n\n"
-                f"*Режим и исход:*\n"
-                f"• 🎳 Боулинг: `бол - победа` или `бол - поражение`\n"
-                f"• 🎲 Чет/Нечет: `чет` или `нечет`\n"
-                f"• 📊 Больше/Меньше: `больше` или `меньше`\n\n"
-                f"👇 *Введите удобную для вас сумму от 0.1 до 10 TON* при оплате через CryptoBot:"
-            ),
-            parse_mode="Markdown",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("💰 Сделать ставку", url=payment_url)],
-                [InlineKeyboardButton("📋 Инструкция", callback_data="instruction")]
-            ])
-        )
-        logger.info(f"Successfully sent bet message to channel {channel_id}")
+ # Send bet message to the channel
+message = await context.bot.send_message(
+    chat_id=channel_id,
+    text=(
+        f"🎮 *НОВАЯ СТАВКА* 🔥\n\n"
+        f"👤 Игрок: {user.first_name}\n\n"
+        f"📝 *В комментарии к платежу укажите:*\n\n"
+        f"*Режим и исход:*\n"
+        f"• 🎳 Боулинг: `бол - победа` или `бол - поражение`\n"
+        f"• 🎲 Чет/Нечет: `чет` или `нечет`\n"
+        f"• 📊 Больше/Меньше: `больше` или `меньше`\n\n"
+        f"👇 *Введите удобную для вас сумму от 0.1 до 10 TON* при оплате через CryptoBot:"
+    ),
+    parse_mode="Markdown",
+    reply_markup=InlineKeyboardMarkup([
+        [InlineKeyboardButton("💰 Сделать ставку", url=payment_url)],
+        [InlineKeyboardButton("📋 Инструкция", callback_data="instruction")]
+    ])
+)
+logger.info(f"Successfully sent bet message to channel {channel_id}")
 
         # Save bet information in context
         if not context.user_data.get("bets"):
