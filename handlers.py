@@ -17,7 +17,7 @@ from crypto_payments import create_deposit_invoice, test_api_connection, create_
 logger = logging.getLogger(__name__)
 
 # Get channel ID for posting results from environment variables
-RESULTS_CHANNEL_ID = os.getenv("RESULTS_CHANNEL_ID")
+RESULTS_CHANNEL_ID = os.getenv("-1002305257035")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handle the /start command."""
