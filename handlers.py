@@ -12,7 +12,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from user_data import (get_user_data, update_user_data, save_user_data, 
                      get_games_played, get_registration_date, get_favorite_game)
-from crypto_payments import create_deposit_invoice, test_api_connection, create_fixed_invoice
+from crypto_payments import create_deposit_invoice, test_api_connection, create_fixed_invoice, create_payment_url
 
 logger = logging.getLogger(__name__)
 
@@ -179,46 +179,23 @@ async def profile_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     )
 
 async def play_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Handle play button click."""
-    try:
-        query = update.callback_query
-        await query.answer()
-    except Exception as e:
-        logger.warning(f"Could not answer callback query: {e}")
-        pass
-
-    # Use the game channel ID
-    channel_id = "-1002305257035"  # Игровой канал
-    fixed_channel_url = "https://t.me/test5363627"  # TODO: обновить на реальный URL канала
-    channel_url = fixed_channel_url
+    """Обработчик кнопки 'ИГРАТЬ'."""
+    query = update.callback_query
+    await query.answer()
 
     user = query.from_user
-    payment_url = "https://t.me/CryptoBot?start=IV15707697"  # Используем фиксированный инвойс
 
-    try:
-        # Verify bot permissions in the channel
-        try:
-            bot_member = await context.bot.get_chat_member(chat_id=channel_id, user_id=context.bot.id)
-            logger.info(f"Bot permissions in channel {channel_id}: {bot_member.status}")
+    # Создаем платежный URL для CryptoBot
+    payment_url = await create_payment_url(user.id)
 
-            if bot_member.status not in ['administrator', 'member']:
-                await query.edit_message_text(
-                    text="⚠️ Бот не имеет доступа к игровому каналу. Пожалуйста, добавьте бота в канал как администратора и попробуйте снова.",
-                    reply_markup=InlineKeyboardMarkup([
-                        [InlineKeyboardButton("◀️ Назад", callback_data="back_to_main")]
-                    ])
-                )
-                return
-        except Exception as e:
-            logger.error(f"Error checking bot permissions: {e}")
-            await query.edit_message_text(
-                text="⚠️ Бот не имеет доступа к игровому каналу. Пожалуйста, добавьте бота в канал как администратора и попробуйте снова.",
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("◀️ Назад", callback_data="back_to_main")]
-                ])
-            )
-            return
-
+    # Отправляем сообщение с кнопкой для перехода в CryptoBot
+    await query.edit_message_text(
+        text="💎 Хочешь испытать удачу?\n\n👇 Нажми на кнопку ниже, чтобы перейти в @CryptoBot и сделать ставку.",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("💰 Сделать ставку", url=payment_url)],
+            [InlineKeyboardButton("◀️ Назад", callback_data="back_to_main")]
+        ])
+    )
         # Send bet message to the channel
         message = await context.bot.send_message(
             chat_id=channel_id,
