@@ -14,8 +14,8 @@ from user_data import get_user_data, update_user_data, save_user_data
 logger = logging.getLogger(__name__)
 
 # Get environment variables
-CRYPTOBOT_TOKEN = os.getenv("CRYPTOBOT_TOKEN")
-RESULTS_CHANNEL_ID = os.getenv("RESULTS_CHANNEL_ID")
+CRYPTOBOT_TOKEN = os.getenv("350654:AA4mK8piTvxLsVDBy2Xd2Jt7TrgmePStj2b")
+RESULTS_CHANNEL_ID = os.getenv("-1002305257035")
 
 # CryptoBot API URL
 CRYPTOBOT_API_URL = "https://pay.crypt.bot/api"
